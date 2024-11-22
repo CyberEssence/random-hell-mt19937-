@@ -1,6 +1,6 @@
 # Random Hell
 
-## This research is a continuation of a series of articles (https://github.com/anneouyang/MT19937#part-i-implement-the-mt19937-mersenne-twister-rng)
+## This research is a continuation of a series of articles (https://github.com/anneouyang/MT19937)
 
 ### Stage 1: Write my own implementation of random number generator mt19937 \ x
 
