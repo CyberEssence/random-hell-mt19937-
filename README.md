@@ -6,4 +6,4 @@
 
 ### Stage 2: Crack and guess values of my own mt19937 RNG \ x
 
-### Stage 3: Clone mt19937 based on input data
+### Stage 3: Clone mt19937 based on output data
