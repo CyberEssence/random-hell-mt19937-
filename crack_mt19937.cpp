@@ -27,6 +27,8 @@ private:
         index = 0;
     }
 
+    friend void twist_MT19937(MT19937& mt);
+
 public:
     MT19937(unsigned long seed) {
         mt[0] = seed;
@@ -34,6 +36,10 @@ public:
             mt[i] = 0xffffffff & (1812433253 * (mt[i - 1] ^ (mt[i - 1] >> 30)) + i);
         }
         index = 0;
+    }
+
+    void setMt(int index, long unsigned int value) {
+        mt[index] = value;
     }
 
     unsigned long temper() {
@@ -52,31 +58,39 @@ public:
     }
 };
 
+void twist_MT19937(MT19937& mt) {
+        mt.twist();
+}
+
+int calcSleepTime(int min_sleep_time, int max_sleep_time) {
+        return rand() % (max_sleep_time - min_sleep_time + 1) + min_sleep_time;
+}
+
 int main() {
     srand(time(0));
-    int min_sleep_time = 40;
-    int max_sleep_time = 100;
+    int minSleepTime = 40;
+    int maxSleepTime = 100;
 
-    int sleep_time_1 = rand() % (max_sleep_time - min_sleep_time + 1) + min_sleep_time;
-    std::cout << "Sleep time 1: " << sleep_time_1 << std::endl;
-    sleep(sleep_time_1);
+    int firstSleepTime = calcSleepTime(minSleepTime, maxSleepTime);
+    std::cout << "Sleep time 1: " << firstSleepTime << std::endl;
+    sleep(firstSleepTime);
 
-    unsigned long seed1 = time(0);
-    MT19937 rng(seed1);
-    std::cout << "Actual seed: " << seed1 << std::endl;
+    unsigned long firstSeed = time(0);
+    MT19937 rng(firstSeed);
+    std::cout << "Actual seed: " << firstSeed << std::endl;
 
-    int sleep_time_2 = rand() % (max_sleep_time - min_sleep_time + 1) + min_sleep_time;
-    std::cout << "Sleep time 2: " << sleep_time_2 << std::endl;
-    sleep(sleep_time_2);
+    int secondSleepTime = calcSleepTime(minSleepTime, maxSleepTime);
+    std::cout << "Sleep time 2: " << secondSleepTime << std::endl;
+    sleep(secondSleepTime);
 
     unsigned long number = rng.temper();
-    unsigned long seed2 = time(0);
-    for (unsigned long i = time(0) - max_sleep_time; i < time(0) - min_sleep_time; i++) {
+    unsigned long secondSeed = time(0);
+    for (unsigned long i = time(0) - maxSleepTime; i < time(0) - minSleepTime; i++) {
         MT19937 rng(i);
-        unsigned long tmp_num = rng.temper();
-        if (tmp_num == number) {
-            seed2 = i;
-            std::cout << "Guessed seed: " << seed2 << std::endl;
+        unsigned long tmpNum = rng.temper();
+        if (tmpNum == number) {
+            secondSeed = i;
+            std::cout << "Guessed seed: " << secondSeed << std::endl;
             break;
         }
     }
